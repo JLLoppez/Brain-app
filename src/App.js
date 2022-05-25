@@ -147,7 +147,7 @@ class App extends Component {
         method: "POST",
         headers: {
           Accept: "application/json",
-          Authorization: "Key 2ff182288bb944d79514c2b07c05611c",
+          Authorization: process.env.Author,
         },
         body: raw,
       }
