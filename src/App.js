@@ -128,8 +128,8 @@ class App extends Component {
 
 		const raw = JSON.stringify({
         "user_app_id": {
-            "user_id": "jlloop3s_0412",
-            "app_id": "73dace1f4e42480d9ef6cfb5e4969603"
+            "user_id": process.env.User_ID,
+            "app_id": process.env.App_ID
         },
         "inputs": [
             {
