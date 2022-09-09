@@ -1,4 +1,4 @@
-import React  from 'react';
+import React, {Component}  from 'react';
 import Particles from 'react-tsparticles';
 // import Navigation from './component/Navigation/Navigation';
 // import Signin from './component/SignIn/Signin';
@@ -69,24 +69,25 @@ const particlesOptions ={
 
 // import Option from './components/Option/Option';
 
-function App() {
-  return (
-    <div className="App">
-    <Particles className='particles'
-    	params={particlesOptions}
- 	/>
-      <div className="container">
-        <h1>
-          Website
-          <br />
-          Coming Soon
-        </h1>
-        <Time />
-       {/*{ <Option />}*/}
-        {<Preload />}
-      </div>
-    </div>
-  );
+class  App extends Component {
+	render () {
+		return (
+		    <div className="App">
+		    	<Particles className='particles'
+		      	params={particlesOptions}/>
+		    <div className="container">
+		        <h1>
+		            Website
+		        <br />
+		            Coming Soon
+		        </h1>
+		        <Time />
+		         {/*{ <Option />}*/}
+		        {<Preload />}
+		        </div>
+		    </div>
+		);
+	}
 }
 
 // const initialState = {
@@ -240,7 +241,7 @@ function App() {
 //        </div>
 //     );
 //   }
-// }
+//}
 
 
 

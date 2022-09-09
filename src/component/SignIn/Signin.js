@@ -1,6 +1,14 @@
 import React from 'react';
+// import {useState} from 'react';
+import {Form} from "../../utility/Forms";
 
-
+//   const Login = () => {
+//   const [email, setEmail] = useState("");
+//   const [password, setPassword] = useState("");
+//   const [remember, setRemember] = useState(false);
+//   const [validate, setValidate] = useState({});
+//   const [showPassword, setShowPassword] = useState(false);
+// }
 
 
 class Signin extends React.Component {
@@ -20,6 +28,54 @@ class Signin extends React.Component {
   onPasswordChange = (event) => {
     this.setState({signInPassword: event.target.value})
   }
+
+  validateLogin = (event) => {
+    let isValid = true;
+    let validator = Form.validator({
+      email:{
+        value:this.state.signInEmail,
+        isRequired: true,
+        isEmail: true,
+      },
+      password:{
+        value:this.state.signInPassword,
+        isRequired: true,
+        minLength: 8
+      }
+    });
+    if (validator !== null) {
+      this.state.setValidate({
+        validate: validator.errors,
+      });
+
+      isValid = false;
+    }
+    return isValid;
+  };
+
+  authetication = (e) => {
+    e.preventDefault();
+
+    this.state.validate = this.state.validateLogin();
+
+    if (this.state.validate) {
+      this.state.setValidate({});
+      this.state.signInEmail("");
+      this.state.signInPassword("");
+      alert("Successfully Login");
+    }
+
+  };
+
+  togglePassword = (e) => {
+    if (this.state.showPassword) {
+      this.state.setShowPassword(false);
+    } else {
+      this.state.setShowPassword(true);
+    }
+  };
+
+
 
 
   onSubmitSignIn = () => {
@@ -62,9 +118,15 @@ class Signin extends React.Component {
                 <label className="db fw6 lh-copy f6" htmlFor="password">Password</label>
                 <input
                   className="b pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100"
-                  type="password"
+                  type={this.state.showPassword ? "text" : "password"}
+                  className={`form-control ${
+                        this.state.validate.validate && this.state.validate.validate.password
+                          ? "is-invalid "
+                          : ""
+                      }`}
                   name="password"
                   id="password"
+                  value={this.state.signInPassword}
                   onChange={this.onPasswordChange}
                 />
               </div>
