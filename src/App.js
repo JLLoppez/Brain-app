@@ -148,57 +148,87 @@ class App extends Component {
 		this.setState({input: event.target.value});
 	}
 
-	
 	onButtonSubmit = () => {
 		this.setState({imageUrl: this.state.input});
+		  fetch('https://brain-app-api.onrender.com/imageurl', {
+			method: 'post',
+			headers: {'Content-Type': 'application/json'},
+			body: JSON.stringify({
+			  input: this.state.input
+			})
+		  })
+		  .then(response => response.json())
+		  .then(response => {
+			if (response) {
+			  fetch('https://brain-app-api.onrender.com/image', {
+				method: 'put',
+				headers: {'Content-Type': 'application/json'},
+				body: JSON.stringify({
+				  id: this.state.user.id
+				})
+			  })
+				.then(response => response.json())
+				.then(count => {
+				  this.setState(Object.assign(this.state.user, { entries: count}))
+				})
+				.catch(console.log)
+	
+			}
+			this.displayFaceBox(this.calculateFaceLocation(response))
+		  })
+		  .catch(err => console.log(err));
+	  }
 
-		const raw = JSON.stringify({
-        "user_app_id": {
-            "user_id": process.env.User_ID,
-            "app_id": "73dace1f4e42480d9ef6cfb5e4969603"
-        },
-        "inputs": [
-            {
-                "data": {
-                    "image": {
-                        url: this.state.input
-                    }
-                }
-            }
-        ]
-    });
+	// onButtonSubmit = () => {
+	// 	this.setState({imageUrl: this.state.input});
 
-    fetch(
-			"https://api.clarifai.com/v2/models/f76196b43bbd45c99b4f3cd8e8b40a8a/outputs",      {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          Authorization: "Key 2ff182288bb944d79514c2b07c05611c",
-        },
-        body: raw,
-      }
-    )
+	// 	const raw = JSON.stringify({
+    //     "user_app_id": {
+    //         "user_id": process.env.User_ID,
+    //         "app_id": "73dace1f4e42480d9ef6cfb5e4969603"
+    //     },
+    //     "inputs": [
+    //         {
+    //             "data": {
+    //                 "image": {
+    //                     url: this.state.input
+    //                 }
+    //             }
+    //         }
+    //     ]
+    // });
 
-    .then((response) => response.text())
-    .then((response) => {
-      if (response){
-        fetch('https://brainap-lop.herokuapp.com/image', 
-        {
-          method: 'put',
-          headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify({
-            id: this.state.user.id
-          })
-        })
-        .then(response => response.json())
-        .then(count => {
-          this.setState(Object.assign(this.state.user, {entries: count}));
-        });
-      }
-      this.displayFaceBox(this.calculateFaceLocation(response));
-    })
-    .catch((error) => console.log('error', error));
-	}
+    // fetch(
+	// 		"https://api.clarifai.com/v2/models/f76196b43bbd45c99b4f3cd8e8b40a8a/outputs",      {
+    //     method: "POST",
+    //     headers: {
+    //       Accept: "application/json",
+    //       Authorization: "Key 2ff182288bb944d79514c2b07c05611c",
+    //     },
+    //     body: raw,
+    //   }
+    // )
+
+    // .then((response) => response.text())
+    // .then((response) => {
+    //   if (response){
+    //     fetch('https://brainap-lop.herokuapp.com/image', 
+    //     {
+    //       method: 'put',
+    //       headers: {'Content-Type': 'application/json'},
+    //       body: JSON.stringify({
+    //         id: this.state.user.id
+    //       })
+    //     })
+    //     .then(response => response.json())
+    //     .then(count => {
+    //       this.setState(Object.assign(this.state.user, {entries: count}));
+    //     });
+    //   }
+    //   this.displayFaceBox(this.calculateFaceLocation(response));
+    // })
+    // .catch((error) => console.log('error', error));
+	// }
 		
 
 	
